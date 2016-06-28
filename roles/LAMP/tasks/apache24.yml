@@ -1,0 +1,27 @@
+---
+##
+# Mise en oeuvre de Apache 2.4.
+##
+
+- name: Installer Apache
+  yum: name=httpd-2.4* state=present
+
+#- name: Remplacer le fichier /etc/httpd/conf/httpd.conf
+#  template: src=httpd.conf.j2 dest=/etc/httpd/conf/httpd.conf
+#  notify: restart httpd
+
+- name: Remplacer le fichier /etc/httpd/conf.d/welcome.conf
+  template: src=welcome.conf.j2 dest=/etc/httpd/conf.d/welcome.conf 
+  notify: restart httpd
+
+- name: Placer le fichier /var/www/html/index.php
+  template: src=index.php.j2 dest=/var/www/html/index.php 
+
+- name: insert firewalld rule for httpd/http
+  firewalld: service=http permanent=true state=enabled immediate=yes
+
+#- name: insert firewalld rule for httpd/https
+#  firewalld: service=https permanent=true state=enabled immediate=yes
+
+- name: Démarrer le service httpd
+  service: name=httpd state=started enabled=yes

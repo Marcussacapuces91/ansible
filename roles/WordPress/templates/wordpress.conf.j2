@@ -1,0 +1,13 @@
+<Directory /wordpress >
+  AllowOverride Options
+  <IfModule mod_authz_core.c>
+    Require all granted
+  </IfModule>
+</Directory>
+
+<Directory /wordpress/wp-content/plugins/akismet>
+  <FilesMatch "\.(php|txt)$">
+    Order Deny,Allow
+    Deny from all
+  </FilesMatch>
+</Directory>

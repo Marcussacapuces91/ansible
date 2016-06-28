@@ -1,0 +1,54 @@
+---
+# Ce rôle configure un serveur CentOS7 de base
+
+- name: Installer pip
+  yum: name=python-pip state=present
+
+- name: upgrade de pip
+  pip: name=pip state=latest
+  environment: { http_proxy: "http://FLX_DEVLABS:FLX_DEVLABS@proxy1.mousquetaires.com:8080", https_proxy: "http://FLX_DEVLABS:FLX_DEVLABS@proxy1.mousquetaires.com:8080" }
+
+#- name: Installer git
+#  yum: name=git state=present
+
+#- name: Mise à jour d'Ansible en 2.2.0
+#  pip: name='git+https://github.com/ansible/ansible.git@devel' state=latest
+#  environment: { http_proxy: "http://FLX_DEVLABS:FLX_DEVLABS@proxy1.mousquetaires.com:8080", https_proxy: "http://FLX_DEVLABS:FLX_DEVLABS@proxy1.mousquetaires.com:8080" }
+
+- name: Installer libselinux-python, requis pour la mise à jour du fichier /etc/ntp.conf
+  yum: name=libselinux-python state=present
+
+##
+# Mise en oeuvre de NTP.
+##
+- name: Installer NTP
+  yum: name=ntp state=present
+
+- name: Remplacer le fichier /etc/ntp.conf
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  notify: restart ntp
+
+- name: Démarrer le service ntpd
+  service: name=ntpd state=started enabled=yes
+
+
+##
+# Mise en oeuvre de Firewalld
+##
+- name: Installer Firewalld
+  yum: name=firewalld state=present
+
+- name: Démarrer le service Firewalld
+  service: name=firewalld state=started enabled=yes
+
+- name: Maintenir SSH ouvert
+  firewalld: service=ssh permanent=true state=enabled
+
+- name: Installer l'extension epel-release, pour phpmyadmin
+  yum: name="epel-release" state="present"
+
+
+
+
+ 
+

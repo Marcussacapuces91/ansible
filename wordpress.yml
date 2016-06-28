@@ -1,0 +1,14 @@
+---
+# Ce playbook configure un site WordPress avec le socle suivant :
+# - CentOS 7
+# - LAMP
+
+
+- name: Configure un serveur avec le rôle CentOS 7
+  hosts: localhost
+  roles:
+    - { role: "CentOS 7", hostname="localhost" }
+    - { role: "LAMP", require_ip_v4: "127.0.0.1", mysql_root_password: "changeme" }
+    - { role: "WordPress", database: "wordpress", database_user: "wordpress", database_password: "password" }
+
+

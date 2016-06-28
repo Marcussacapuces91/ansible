@@ -1,0 +1,39 @@
+---
+##
+# Mise en oeuvre de PHP 
+##
+
+#  yum_repository: name=remi-php56 baseurl=http://rpms.remirepo.net/enterprise/$releasever/php56/$basearch/ enabled=no description="Remi PHP56 repo" gpgcheck=no state=present
+#- name: Charger le repo remi-release-7
+#  yum_repository: name=remi-php56 baseurl=http://rpms.remirepo.net/enterprise/$releasever/php56/$basearch/ enabled=no description="Remi PHP56 repo"
+
+- name: Activer le repo REMI
+  yum: name=https://remi.mirror.ate.info/enterprise/remi-release-7.rpm state=present validate_certs=False
+#  yum: name=http://rpms.remirepo.net/enterprise/remi-release-7.rpm state=present validate_certs=false
+
+#- name: Import remi GPG key.
+#  rpm_key: key="http://rpms.remirepo.net/RPM-GPG-KEY-remi" state=present
+
+- name: Installer PHP et certains modules
+  yum: name={{ item }} state=present enablerepo=remi-php56
+#  yum: name={{ item }} state=present enablerepo=remi-php56 disable_gpg_check=yes
+#  yum: name={{ item }} state=present enablerepo=remi-release-7 disable_gpg_check=yes
+  notify: restart httpd
+  with_items:
+   - php
+   - php-fpm
+   - php-pdo
+   - php-mysql
+   - php-ldap
+   - php-mbstring
+   - php-gd
+   - php-common
+   - php-mcrypt
+   - php-xml
+   - php-opcache
+#   - php-mysqlnd-5.4*
+#   - php-curl-5.4*
+#   - php-cli-5.4*
+#   - php-pear-5.4*
+#   - php-gettext-5.4*
+

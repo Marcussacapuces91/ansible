@@ -1,0 +1,19 @@
+---
+##
+# Mise en oeuvre de PhpMyAdmin
+##
+- name: Installer phpmyadmin
+  yum: name=phpmyadmin state=present
+  notify: 
+   - restart httpd
+
+- name: Remplacer le fichier /etc/httpd/conf.d/phpMyAdmin.conf
+  template: src=phpMyAdmin.conf.j2 dest=/etc/httpd/conf.d/phpMyAdmin.conf
+  notify: 
+   - restart httpd
+
+- name: Déposer le fichier config.inc.php
+  template: src=config.inc.php.j2 dest=/etc/phpMyAdmin/config.inc.php
+
+- name: Supprimer le répertoire /usr/share/phpMyAdmin/setup
+  file: path=/usr/share/phpMyAdmin/setup state=absent

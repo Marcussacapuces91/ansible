@@ -1,0 +1,12 @@
+---
+# Ce playbook configure un serveur avec le socle suivant :
+# - CentOS 7
+# - LAMP
+# - MediaWiki
+
+- name: Configure un serveur avec le rôle CentOS 7
+  hosts: pc60.home
+  roles:
+    - { role: "CentOS 7", hostname="pc60" }
+    - { role: "LAMP", require_ip_v4: "192.168.1.27", mysql_root_password: "changeme" }
+    - { role: "MediaWiki" }

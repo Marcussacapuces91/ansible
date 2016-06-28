@@ -1,0 +1,21 @@
+---
+# Ce rôle configure un socle LAMP sur un CentOS7 de base
+# Avec :
+# - Apache 2.4
+# - PHP 5.6
+# - MariaDB 5.5
+# - phpMyadmin (optionnellement)
+
+- name: Include Apache 2.4
+  include: apache24.yml
+
+- name: Include PHP 5.6
+  include: php56.yml
+
+- name: Include MariaDB 5.5
+  include: mariadb55.yml
+
+- name: Include phpMyAdmin
+  include: phpmyadmin.yml
+  when: (phpMyAdmin is undefined) or phpMyAdmin
+
